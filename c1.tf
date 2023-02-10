@@ -7,8 +7,18 @@ terraform {
     }
   }
 }
+
+variable "aws_region" {
+  description = "Region in which AWS Resources to be created"
+  type = string
+}
+variable "ec2_tag" {
+  description = "This is EC2 Instance tag"
+  type = string
+}
+
 provider "aws" {
-  region  = "us-east-1"
+  region  = var.aws_region
   #if you are running on cloud no profile information should be mentioned
 }
 
@@ -17,6 +27,6 @@ resource "aws_instance" "my-ec2-vm" {
   instance_type = "t2.micro"
   key_name      = "demo"
   tags = {
-    "Name" = "production-${terraform.workspace}-0"
+    "Name" = "${var.ec2_tag}-${terraform.workspace}-0"
   }
 }
